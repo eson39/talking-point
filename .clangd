@@ -1,0 +1,4 @@
+CompileFlags:
+  Add:
+    - -Inode_modules/node-addon-api
+    - -Inode_modules/node-addon-api/external-napi

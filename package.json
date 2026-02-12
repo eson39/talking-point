@@ -6,13 +6,17 @@
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "dist:win": "electron-builder --win",
+    "dist:mac": "electron-builder --mac",
+    "native:mac": "node-gyp configure build --directory=native --target=$(node -p \"require('electron/package.json').version\") --dist-url=https://electronjs.org/headers"
   },
   "author": "eson39",
   "license": "MIT",
   "devDependencies": {
     "electron": "^28.0.0",
-    "electron-builder": "^24.9.1"
+    "electron-builder": "^24.9.1",
+    "node-addon-api": "^8.5.0"
   },
   "dependencies": {
     "electron-store": "^8.1.0"
@@ -21,6 +25,14 @@
     "appId": "co.talkingpoint.app",
     "productName": "Talking Point",
     "files": ["src/**", "package.json", "node_modules/**", "!**/*.md", "!**/*.map", "!**/README*", "!**/CHANGELOG*", "!**/.git*"],
+    "asarUnpack": ["**/*.node"],
+    "extraResources": [
+      {
+        "from": "native/build/Release/talking_point_native.node",
+        "to": "native/talking_point_native.node",
+        "filter": ["**/*"]
+      }
+    ],
     "win": {
       "target": [
         {
@@ -28,6 +40,11 @@
           "arch": ["x64"]
         }
       ]
+    },
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": ["dmg", "zip"],
+      "identity": null
     },
     "nsis": {
       "oneClick": false,

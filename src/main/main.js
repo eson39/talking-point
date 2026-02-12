@@ -3,12 +3,23 @@ const path = require('path');
 const fs = require('fs');
 const Store = require('electron-store');
 
-if (process.platform !== 'win32') {
-  console.error('Talking Point is Windows-only. The overlay cannot be hidden from screen capture on macOS.');
-  app.exit(1);
-}
-
 const store = new Store();
+
+function tryEnableMacZoomWindowFilteringExclusion(win) {
+  if (process.platform !== 'darwin') return;
+  try {
+    const addonPath = app.isPackaged
+      ? path.join(process.resourcesPath, 'native', 'talking_point_native.node')
+      : path.join(__dirname, '../../native/build/Release/talking_point_native.node');
+    // eslint-disable-next-line import/no-dynamic-require, global-require
+    const addon = require(addonPath);
+    const handle = win.getNativeWindowHandle();
+    const ok = addon.setWindowSharingNone(handle);
+    console.log(`[TalkingPoint] setWindowSharingNone applied: ${Boolean(ok)}`);
+  } catch (err) {
+    console.warn('[TalkingPoint] Failed to apply macOS window sharing exclusion (addon).', err);
+  }
+}
 
 function getNotesPath() {
   return path.join(app.getPath('userData'), 'notes.txt');
@@ -53,12 +64,30 @@ function createOverlayWindow() {
     },
   });
 
-  overlayWindow.setAlwaysOnTop(true, 'screen-saver');
+  overlayWindow.setAlwaysOnTop(true, 'screen-saver', 1);
+
+  if (process.platform === 'darwin') {
+    overlayWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+    overlayWindow.setHiddenInMissionControl(true);
+    overlayWindow.setWindowButtonVisibility(false);
+    overlayWindow.setBackgroundColor('#00000000');
+    overlayWindow.setSkipTaskbar(true);
+    overlayWindow.setHasShadow(false);
+
+  }
+
   overlayWindow.loadFile(path.join(__dirname, '../renderer/index.html'));
 
   overlayWindow.once('ready-to-show', () => {
     if (overlayWindow && !overlayWindow.isDestroyed()) {
-      overlayWindow.setContentProtection(true);
+      if (process.platform === 'win32') {
+        overlayWindow.setContentProtection(true);
+      }
+      if (process.platform === 'darwin') {
+        // Best-effort: mark window as non-shareable so Zoom can filter it out
+        // when "Advanced capture with window filtering" is enabled.
+        tryEnableMacZoomWindowFilteringExclusion(overlayWindow);
+      }
     }
   });
 

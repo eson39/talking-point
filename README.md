@@ -1,6 +1,6 @@
 # Talking Point
 
-**Windows only.** A small desktop overlay for meeting notes and bullet points. Paste talking points once, then keep the window on top while you present or record. The overlay is excluded from **entire-screen** sharing (Zoom, Meet, Teams, OBS) so viewers don’t see it.
+A small desktop overlay for meeting notes and bullet points. Paste talking points once, then keep the window on top while you present or record.
 
 ## Features
 
@@ -8,7 +8,8 @@
 - **Edit mode** — Toggle with **Ctrl+E** to paste and edit bullet points and meeting notes; toggle back to view-only.
 - **Persistent notes** — Notes are saved to disk and restored on next launch.
 - **Global hotkeys** — Work even when the app is in the background.
-- **Hidden from screen share** — Uses the same Windows API as InvisiWind (`SetWindowDisplayAffinity` / `WDA_EXCLUDEFROMCAPTURE`). When you share your entire screen, the overlay is excluded from the capture. Requires Windows 10 2004 or later.
+- **Hidden from screen share (Windows)** — Uses the Windows API equivalent of InvisiWind (`SetWindowDisplayAffinity` / `WDA_EXCLUDEFROMCAPTURE`) via Electron `setContentProtection(true)`.
+- **Hidden from screen share (macOS + Zoom)** — Best-effort: the app marks its window as “not shareable”; **Zoom must have “Advanced capture with window filtering” enabled** (see [Interview Coder’s Zoom note](https://www.interviewcoder.co/help?section=shows-when-sharing)). This is not guaranteed for every capture app on macOS.
 
 ## Hotkeys
 
@@ -32,11 +33,11 @@ In edit mode: **Esc** to save and switch back to view mode. To edit notes while 
 4. **Launch** Talking Point from the Start Menu or Desktop. Use **Ctrl+B** to show or hide the overlay.
 5. **Uninstall** anytime via Settings → Apps → Talking Point → Uninstall (or Add or remove programs).
 
-Requires **Windows 10 2004 or later** (64-bit).
+Windows invisibility requires **Windows 10 2004 or later** (64-bit).
 
-## Build the installer (developers)
+## Build installers (developers)
 
-On Windows, from the project folder:
+### Windows
 
 ```bash
 npm install
@@ -44,6 +45,16 @@ npm run dist
 ```
 
 The installer is written to `dist/Talking Point Setup 1.0.0.exe` (version from `package.json`). That single file includes the app and everything needed; users only need to download and run it.
+
+### macOS
+
+Build the native addon + DMG/ZIP:
+
+```bash
+npm install
+npm run native:mac
+npm run dist:mac
+```
 
 **Why is the installer large?** Electron bundles Chromium and Node.js (~120–180 MB), so even a small app produces a ~150–200 MB installer. The build is configured to exclude docs, source maps, and markdown to trim a few MB. To get a much smaller app you’d need a different stack (e.g. Tauri).
 

@@ -14,6 +14,7 @@
 
 | Shortcut | Action |
 |----------|--------|
+| **Ctrl+Q** | Quit the app |
 | **Ctrl+B** | Show or hide the overlay |
 | **Ctrl+Shift+D** | Toggle click-through (clicks pass through overlay to apps behind; use again to interact with overlay) |
 | **Ctrl+E** | Toggle edit mode |

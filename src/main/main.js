@@ -44,7 +44,7 @@ function createOverlayWindow() {
     frame: false,
     alwaysOnTop: true,
     skipTaskbar: true,
-    resizable: true,
+    resizable: false,
     hasShadow: false,
     webPreferences: {
       preload: path.join(__dirname, '../preload/preload.js'),
@@ -84,6 +84,10 @@ function createOverlayWindow() {
 const MOVE_STEP = 40;
 
 function registerShortcuts() {
+  globalShortcut.register('CommandOrControl+Q', () => {
+    app.quit();
+  });
+
   globalShortcut.register('CommandOrControl+B', () => {
     if (!overlayWindow || overlayWindow.isDestroyed()) return;
     if (overlayWindow.isVisible()) {

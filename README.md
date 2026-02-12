@@ -45,6 +45,8 @@ npm run dist
 
 The installer is written to `dist/Talking Point Setup 1.0.0.exe` (version from `package.json`). That single file includes the app and everything needed; users only need to download and run it.
 
+**Why is the installer large?** Electron bundles Chromium and Node.js (~120–180 MB), so even a small app produces a ~150–200 MB installer. The build is configured to exclude docs, source maps, and markdown to trim a few MB. To get a much smaller app you’d need a different stack (e.g. Tauri).
+
 ## Tech
 
 - **Electron** — Main process creates one transparent, frameless, always-on-top `BrowserWindow`.

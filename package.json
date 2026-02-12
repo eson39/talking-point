@@ -20,6 +20,7 @@
   "build": {
     "appId": "co.talkingpoint.app",
     "productName": "Talking Point",
+    "files": ["src/**", "package.json", "node_modules/**", "!**/*.md", "!**/*.map", "!**/README*", "!**/CHANGELOG*", "!**/.git*"],
     "win": {
       "target": [
         {

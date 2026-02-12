@@ -1,0 +1,27 @@
+{
+  "name": "talking-point",
+  "version": "1.0.0",
+  "description": "Transparent overlay for meeting notes and bullet points — invisible to screen sharing on Windows",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "author": "eson39",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "dependencies": {
+    "electron-store": "^8.1.0"
+  },
+  "build": {
+    "appId": "co.talkingpoint.app",
+    "productName": "Talking Point",
+    "win": {
+      "target": ["nsis", "portable"]
+    }
+  }
+}

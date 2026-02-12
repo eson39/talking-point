@@ -21,7 +21,20 @@
     "appId": "co.talkingpoint.app",
     "productName": "Talking Point",
     "win": {
-      "target": ["nsis", "portable"]
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Talking Point",
+      "uninstallDisplayName": "Talking Point"
     }
   }
 }

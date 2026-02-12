@@ -15,31 +15,34 @@
 | Shortcut | Action |
 |----------|--------|
 | **Ctrl+B** | Show or hide the overlay |
+| **Ctrl+Shift+D** | Toggle click-through (clicks pass through overlay to apps behind; use again to interact with overlay) |
 | **Ctrl+E** | Toggle edit mode |
 | **Ctrl+M** | Enlarge the window |
 | **Ctrl+N** | Shrink the window |
 | **Ctrl+Arrow** | Move the window |
 
-In edit mode: **Esc** to save and switch back to view mode.
+In edit mode: **Esc** to save and switch back to view mode. To edit notes while click-through is on, press **Ctrl+Shift+D** first to turn it off.
 
-## Run from source
+## For users: download and install
 
-Requires **Windows 10 2004 or later.**
+1. **Download** the installer (e.g. `Talking Point Setup 1.0.0.exe`) from the release or your download link.
+2. **Run** the .exe. Windows may show a SmartScreen prompt — choose “More info” then “Run anyway” if you trust the publisher.
+3. **Follow the wizard**: pick an install location (or keep the default), then finish. The app is installed with a Start Menu shortcut and optional Desktop shortcut.
+4. **Launch** Talking Point from the Start Menu or Desktop. Use **Ctrl+B** to show or hide the overlay.
+5. **Uninstall** anytime via Settings → Apps → Talking Point → Uninstall (or Add or remove programs).
+
+Requires **Windows 10 2004 or later** (64-bit).
+
+## Build the installer (developers)
+
+On Windows, from the project folder:
 
 ```bash
 npm install
-npm start
-```
-
-Always use `npm start` (or `npx electron .`). Do not run the main script with `node`.
-
-## Build installers
-
-```bash
 npm run dist
 ```
 
-Outputs NSIS installer and portable build in `dist/`.
+The installer is written to `dist/Talking Point Setup 1.0.0.exe` (version from `package.json`). That single file includes the app and everything needed; users only need to download and run it.
 
 ## Tech
 

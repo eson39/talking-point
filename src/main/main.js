@@ -15,6 +15,7 @@ function getNotesPath() {
 }
 
 let overlayWindow = null;
+let clickThrough = false;
 
 const DEFAULT_BOUNDS = { width: 400, height: 300, x: 100, y: 100 };
 
@@ -95,6 +96,12 @@ function registerShortcuts() {
   globalShortcut.register('CommandOrControl+E', () => {
     if (!overlayWindow || overlayWindow.isDestroyed()) return;
     overlayWindow.webContents.send('toggle-edit-mode');
+  });
+
+  globalShortcut.register('CommandOrControl+Shift+D', () => {
+    if (!overlayWindow || overlayWindow.isDestroyed()) return;
+    clickThrough = !clickThrough;
+    overlayWindow.setIgnoreMouseEvents(clickThrough, { forward: clickThrough });
   });
 
   globalShortcut.register('CommandOrControl+M', () => {
